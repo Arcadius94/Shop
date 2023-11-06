@@ -5,6 +5,7 @@ import {
   ReactNode,
   useEffect,
 } from "react";
+import data from "../data/data.json";
 
 interface ProductType {
   id: number;
@@ -18,7 +19,7 @@ interface ProductType {
   discount?: number;
 }
 
-const initState: ProductType[] = [];
+const initState: ProductType[] = data;
 
 interface ProductsContext {
   products: ProductType[] | null;
@@ -35,17 +36,17 @@ export const ProductsContextProvider = ({
 }) => {
   const [products, setProducts] = useState(initState);
 
-  useEffect(() => {
-    async function getData(): Promise<ProductType[]> {
-      const data = await fetch("https://fakestoreapi.com/products/")
-        .then((res) => res.json())
-        .catch((err) => {
-          if (err instanceof Error) console.log(err.message);
-        });
-      return data;
-    }
-    getData().then((products) => setProducts(products));
-  }, []);
+  // useEffect(() => {
+  //   async function getData(): Promise<ProductType[]> {
+  //     const data = await fetch("https://fakestoreapi.com/products/")
+  //       .then((res) => res.json())
+  //       .catch((err) => {
+  //         if (err instanceof Error) console.log(err.message);
+  //       });
+  //     return data;
+  //   }
+  //   getData().then((products) => setProducts(products));
+  // }, []);
 
   const addPromoTag = (ids: number[]) => {
     products.map((product: ProductType) => {
