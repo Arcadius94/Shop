@@ -1,0 +1,49 @@
+.navbar {
+  background-color: white;
+  position: sticky;
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1;
+}
+.navList {
+  font-size: 25px;
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.shopName {
+  margin-left: 20px;
+  margin-right: 30px;
+  text-decoration: none;
+  color: #1b1b1b;
+  font-weight: bold;
+}
+.navItem {
+  margin-left: 20px;
+  text-decoration: none;
+  color: #1b1b1b;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.navItem:hover {
+  transform: scale(1.2);
+}
+.cartIcon {
+  transform: translateY(3px);
+}
+.cartQtnShow {
+  min-width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  transform: translate(18px, -46px);
+  font-weight: bold;
+  border-radius: 50%;
+}
