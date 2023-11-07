@@ -2,9 +2,11 @@ import { useCartContext } from "../../context/CartProvider";
 import style from "./Card.module.scss";
 import { Link } from "react-router-dom";
 import { ProductType } from "../../context/ProductsProviderTypes";
+import { useState } from "react";
 
 export const Card = ({ product }: { product: ProductType }) => {
   const { dispatchCart } = useCartContext();
+  const [addToCartFlag, setAddToCartFlag] = useState(false);
   return (
     <div className={style.link}>
       <div className={style.card}>
@@ -19,17 +21,38 @@ export const Card = ({ product }: { product: ProductType }) => {
           <h2 className={style.h2}>{product.title}</h2>
         </Link>
         <div className={style.prices}>
-          <button
-            onClick={() => {
-              dispatchCart({
-                type: "ADD",
-                payload: { qty: 1, ...product },
-              });
-            }}
-            className={style.addToCart}
-          >
-            Add to cart
-          </button>
+          {addToCartFlag ? (
+            <>
+              <button
+                style={{ backgroundColor: "lightgreen" }}
+                onClick={() => {
+                  dispatchCart({
+                    type: "ADD",
+                    payload: { qty: 1, ...product },
+                  });
+                }}
+                className={style.addToCart}
+              >
+                Add more
+              </button>
+              <Link to={`/cart`}>
+                <button className={style.addToCart}>Go to cart</button>
+              </Link>
+            </>
+          ) : (
+            <button
+              onClick={() => {
+                setAddToCartFlag(true);
+                dispatchCart({
+                  type: "ADD",
+                  payload: { qty: 1, ...product },
+                });
+              }}
+              className={style.addToCart}
+            >
+              Add to cart
+            </button>
+          )}
 
           {product.discount ? (
             <div className={style.prices}>

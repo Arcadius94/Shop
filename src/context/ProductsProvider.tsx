@@ -26,11 +26,17 @@ export const ProductsContextProvider = ({
   //   getData().then((products) => setProducts(products));
   // }, []);
 
-  addPromoTag(products, [1, 2, 3, 4]);
+  addPromoTag(products, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
   addDiscount(products, 1, 100);
   addDiscount(products, 2, 100);
   addDiscount(products, 3, 100);
   addDiscount(products, 4, 100);
+  addDiscount(products, 5, 100);
+  addDiscount(products, 6, 100);
+  addDiscount(products, 7, 100);
+  addDiscount(products, 8, 100);
+  addDiscount(products, 9, 100);
+  addDiscount(products, 10, 100);
 
   const promotedProducts = products.filter((product) => {
     return product.promotion === true;

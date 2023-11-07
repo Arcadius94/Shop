@@ -12,7 +12,7 @@ import { Footer } from "./components/Footer/Footer";
 
 function App() {
   return (
-    <>
+    <div className="app">
       <ProductsContextProvider>
         <CartContextProvider>
           <NavBar />
@@ -26,7 +26,7 @@ function App() {
         </CartContextProvider>
       </ProductsContextProvider>
       <Footer />
-    </>
+    </div>
   );
 }
 
