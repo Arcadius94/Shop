@@ -14,6 +14,7 @@ export const Slider = () => {
     setCurrentSlide(currentSlide === 2 ? 0 : (prev) => prev + 1);
   };
   const navigate = useNavigate();
+  console.log(promoted);
   if (promoted === null) {
     return <></>;
   } else {
