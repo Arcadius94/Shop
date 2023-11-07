@@ -17,7 +17,7 @@ function App() {
         <CartContextProvider>
           <NavBar />
           <Routes>
-            <Route path="/Shop/" element={<Home />} />
+            <Route path="/home" element={<Home />} />
             <Route path="/products" element={<Products />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/contact" element={<Contact />} />

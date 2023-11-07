@@ -1,54 +1,16 @@
 import { createContext, useContext, ReactNode, useReducer } from "react";
+import {
+  CartItemType,
+  CartStateType,
+  REDUCER_ACTION_TYPE,
+  CartContextType,
+  ReducerAction,
+} from "./CartProviderTypes";
 
-interface CartItemType {
-  id: number;
-  title: string;
-  price: number;
-  description: string;
-  category: string;
-  image: string;
-  rating: { rate: number; count: number };
-  promotion?: boolean;
-  discount?: number;
-  qty: number;
-}
-interface CartStateType {
-  cart: CartItemType[];
-}
-
+const CartContext = createContext<CartContextType | null>(null);
 const initState: CartStateType = { cart: [] };
 
-interface CartContext {
-  cartState: CartStateType;
-  dispatchCart: React.Dispatch<ReducerAction>;
-  totalItems: number;
-  totalPrice: number;
-}
-
-const CartContext = createContext<CartContext | null>(null);
-
-const REDUCER_ACTION_TYPE: {
-  ADD: "ADD";
-  DECREMENT: "DECREMENT";
-  REMOVE: "REMOVE";
-  QUANTITY: "QUANTITY";
-  SUBMIT: "SUBMIT";
-} = {
-  ADD: "ADD",
-  DECREMENT: "DECREMENT",
-  REMOVE: "REMOVE",
-  QUANTITY: "QUANTITY",
-  SUBMIT: "SUBMIT",
-};
-
-export type ReducerAction =
-  | { type: typeof REDUCER_ACTION_TYPE.ADD; payload: CartItemType }
-  | { type: typeof REDUCER_ACTION_TYPE.REMOVE; payload: number }
-  | { type: typeof REDUCER_ACTION_TYPE.DECREMENT; payload: number }
-  | { type: typeof REDUCER_ACTION_TYPE.QUANTITY; payload: CartItemType }
-  | { type: typeof REDUCER_ACTION_TYPE.SUBMIT };
-
-const Reducer = (
+const CartReducer = (
   state: CartStateType,
   action: ReducerAction
 ): CartStateType => {
@@ -92,8 +54,10 @@ const Reducer = (
         }
         return product;
       });
-      const checkIfQtn0 = lessProductsArr.filter((product) => product.qty > 0);
-      return { ...state, cart: checkIfQtn0 };
+      const withouQty0Arr = lessProductsArr.filter(
+        (product) => product.qty > 0
+      );
+      return { ...state, cart: withouQty0Arr };
     }
     case REDUCER_ACTION_TYPE.QUANTITY: {
       if (!action.payload) {
@@ -101,7 +65,6 @@ const Reducer = (
       }
 
       const { id, qty } = action.payload;
-
       const itemExists: CartItemType | undefined = state.cart.find(
         (item) => item.id === id
       );
@@ -111,7 +74,6 @@ const Reducer = (
       }
 
       const updatedItem: CartItemType = { ...itemExists, qty };
-
       const filteredCart: CartItemType[] = state.cart.filter(
         (item) => item.id !== id
       );
@@ -127,7 +89,7 @@ const Reducer = (
 };
 
 export const CartContextProvider = ({ children }: { children: ReactNode }) => {
-  const [cartState, dispatchCart] = useReducer(Reducer, initState);
+  const [cartState, dispatchCart] = useReducer(CartReducer, initState);
 
   const totalItems = cartState.cart.reduce((previousValue, cartItem) => {
     return previousValue + cartItem.qty;

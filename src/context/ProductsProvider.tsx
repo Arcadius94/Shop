@@ -1,33 +1,11 @@
-import {
-  createContext,
-  useState,
-  useContext,
-  ReactNode,
-  useEffect,
-} from "react";
+import { createContext, useState, useContext, ReactNode } from "react";
 import data from "../data/data.json";
-
-interface ProductType {
-  id: number;
-  title: string;
-  price: number;
-  description: string;
-  category: string;
-  image: string;
-  rating: { rate: number; count: number };
-  promotion?: boolean;
-  discount?: number;
-}
+import { ProductType, ProductsContextType } from "./ProductsProviderTypes";
+import { addPromoTag, addDiscount } from "../tools/promo&discountFcn";
 
 const initState: ProductType[] = data;
 
-interface ProductsContext {
-  products: ProductType[] | null;
-  promoted: ProductType[] | null;
-  discounted: ProductType[] | null;
-}
-
-const ProductsContext = createContext<ProductsContext | null>(null);
+const ProductsContext = createContext<ProductsContextType | null>(null);
 
 export const ProductsContextProvider = ({
   children,
@@ -48,33 +26,17 @@ export const ProductsContextProvider = ({
   //   getData().then((products) => setProducts(products));
   // }, []);
 
-  const addPromoTag = (ids: number[]) => {
-    products.map((product: ProductType) => {
-      if (ids.includes(product.id)) {
-        product.promotion = true;
-      }
-    });
-  };
+  addPromoTag(products, [1, 2, 3, 4]);
+  addDiscount(products, 1, 100);
+  addDiscount(products, 2, 100);
+  addDiscount(products, 3, 100);
+  addDiscount(products, 4, 100);
 
-  const promoted = products.filter((product) => {
+  const promotedProducts = products.filter((product) => {
     return product.promotion === true;
   });
-  // console.log(products);
 
-  const addDiscount = (id: number, discount: number) => {
-    products.map((product: ProductType) => {
-      if (product.id === id) {
-        product.discount = discount;
-      }
-    });
-  };
-  addPromoTag([1, 2, 3, 4]);
-  addDiscount(1, 100);
-  addDiscount(2, 100);
-  addDiscount(3, 100);
-  addDiscount(4, 100);
-
-  const discounted = products.filter((product) => {
+  const discountedProducts = products.filter((product) => {
     return product.discount;
   });
 
@@ -98,20 +60,22 @@ export const ProductsContextProvider = ({
   // // }, [])
 
   return (
-    <ProductsContext.Provider value={{ products, promoted, discounted }}>
+    <ProductsContext.Provider
+      value={{ products, promotedProducts, discountedProducts }}
+    >
       {children}
     </ProductsContext.Provider>
   );
 };
 
-export const useProductsContext = (ids?: string | undefined) => {
+export const useProductsContext = (id?: string | undefined) => {
   const context = useContext(ProductsContext);
   if (!context)
     throw new Error(
       "Context is wrong. UseProductsContext must be used in ProductsContextProvider"
     );
   const product: ProductType | undefined = context.products!.find(
-    (element) => element.id === +ids!
+    (element) => element.id === +id!
   );
   return { product, ...context };
 };

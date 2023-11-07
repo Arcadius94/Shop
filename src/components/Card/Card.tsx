@@ -1,19 +1,7 @@
 import { useCartContext } from "../../context/CartProvider";
 import style from "./Card.module.scss";
-
 import { Link } from "react-router-dom";
-
-interface ProductType {
-  id: number;
-  title: string;
-  price: number;
-  description: string;
-  category: string;
-  image: string;
-  rating: { rate: number; count: number };
-  promotion?: boolean;
-  discount?: number;
-}
+import { ProductType } from "../../context/ProductsProviderTypes";
 
 export const Card = ({ product }: { product: ProductType }) => {
   const { dispatchCart } = useCartContext();

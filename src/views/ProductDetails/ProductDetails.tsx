@@ -3,15 +3,18 @@ import { useProductsContext } from "../../context/ProductsProvider";
 import { useState } from "react";
 import style from "./ProductDetails.module.scss";
 import { useCartContext } from "../../context/CartProvider";
+import { ProductType } from "../../context/ProductsProviderTypes";
+import { REDUCER_ACTION_TYPE } from "../../context/CartProviderTypes";
 
 export const ProductDetails = () => {
   const { productId } = useParams();
-  const { product } = useProductsContext(productId);
+  const { product }: { product: ProductType | undefined } =
+    useProductsContext(productId);
   const [quantity, setQuantity] = useState(1);
   const { dispatchCart } = useCartContext();
 
   if (!product) {
-    return <div>Produkt nie został znaleziony.</div>;
+    return <div>Product not found.</div>;
   }
 
   return (
@@ -53,7 +56,7 @@ export const ProductDetails = () => {
             className={style.add}
             onClick={() => {
               dispatchCart({
-                type: "ADD",
+                type: REDUCER_ACTION_TYPE.ADD,
                 payload: { qty: quantity, ...product },
               });
             }}

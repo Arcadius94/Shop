@@ -1,38 +1,35 @@
-import "./ProductList.scss";
+import style from "./ProductList.module.scss";
 import { Card } from "../Card/Card";
 import { useProductsContext } from "../../context/ProductsProvider";
+import { ProductType } from "../../context/ProductsProviderTypes";
 
-export const ProductList = ({ maxPrice, sort, subCats }: any) => {
+export const ProductList = ({
+  maxPrice,
+  sort,
+  subCats,
+}: {
+  maxPrice: number;
+  sort: "asc" | "desc" | "";
+  subCats: string[];
+}) => {
   const { products } = useProductsContext();
 
-  interface Product {
-    id: number;
-    title: string;
-    price: number;
-    description: string;
-    category: string;
-    image: string;
-    rating: { rate: number; count: number };
-    promotion?: boolean;
-    discount?: number;
-  }
-
-  let filtredProducts: Product[] = products!;
+  let filtredProducts: ProductType[] = products!;
 
   function filterProductsBySelectedCategories(
-    products: Product[],
+    products: ProductType[],
     selectedCategories: string[]
-  ): Product[] {
+  ): ProductType[] {
     return products.filter((product) =>
       selectedCategories.includes(product.category)
     );
   }
 
   function filterProductsByPriceRange(
-    products: Product[],
+    products: ProductType[],
     minPrice: number,
     maxPrice: number
-  ): Product[] {
+  ): ProductType[] {
     return products.filter(
       (product) =>
         product.price >= minPrice &&
@@ -40,7 +37,9 @@ export const ProductList = ({ maxPrice, sort, subCats }: any) => {
     );
   }
 
-  function sortProductsByPriceAscending(products: Product[]): Product[] {
+  function sortProductsByPriceAscending(
+    products: ProductType[]
+  ): ProductType[] {
     return products
       .slice()
       .sort(
@@ -50,7 +49,9 @@ export const ProductList = ({ maxPrice, sort, subCats }: any) => {
       );
   }
 
-  function sortProductsByPriceDescending(products: Product[]): Product[] {
+  function sortProductsByPriceDescending(
+    products: ProductType[]
+  ): ProductType[] {
     return products
       .slice()
       .sort(
@@ -75,7 +76,7 @@ export const ProductList = ({ maxPrice, sort, subCats }: any) => {
   }
 
   return (
-    <div className="list">
+    <div className={style.list}>
       {filtredProducts?.map((item) => (
         <Card product={item} key={item.category + item.id} />
       ))}
