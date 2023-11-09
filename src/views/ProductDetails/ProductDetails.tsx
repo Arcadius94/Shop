@@ -19,52 +19,50 @@ export const ProductDetails = () => {
 
   return (
     <div className={style.product}>
-      <>
-        <div className={style.left}>
-          <div className={style.img}>
-            <img src={product.image} alt={product.title} />
-          </div>
+      <div className={style.left}>
+        <div className={style.img}>
+          <img src={product.image} alt={product.title} />
         </div>
-        <div className={style.right}>
-          <h1>{product.title}</h1>
-          {product.discount ? (
-            <div>
-              <span className={style.crossPrice}>${product.price}</span>
-              <span className={style.price}>${product.discount}</span>
-            </div>
-          ) : (
-            <span className={style.price}>${product.price}</span>
-          )}
-
-          <p className={style.paragraph}>{product.description}</p>
-          <div className={style.quantity}>
-            <button
-              className={style.button}
-              onClick={() => setQuantity((prev) => (prev === 1 ? 1 : prev - 1))}
-            >
-              -
-            </button>
-            {quantity}
-            <button
-              className={style.button}
-              onClick={() => setQuantity((prev) => prev + 1)}
-            >
-              +
-            </button>
+      </div>
+      <div className={style.right}>
+        <h1>{product.title}</h1>
+        {product.discount ? (
+          <div>
+            <span className={style.crossPrice}>${product.price}</span>
+            <span className={style.price}>${product.discount}</span>
           </div>
+        ) : (
+          <span className={style.price}>${product.price}</span>
+        )}
+
+        <p className={style.paragraph}>{product.description}</p>
+        <div className={style.quantity}>
           <button
-            className={style.add}
-            onClick={() => {
-              dispatchCart({
-                type: REDUCER_ACTION_TYPE.ADD,
-                payload: { qty: quantity, ...product },
-              });
-            }}
+            className={style.button}
+            onClick={() => setQuantity((prev) => (prev === 1 ? 1 : prev - 1))}
           >
-            ADD TO CART
+            -
+          </button>
+          {quantity}
+          <button
+            className={style.button}
+            onClick={() => setQuantity((prev) => prev + 1)}
+          >
+            +
           </button>
         </div>
-      </>
+        <button
+          className={style.add}
+          onClick={() => {
+            dispatchCart({
+              type: REDUCER_ACTION_TYPE.ADD,
+              payload: { qty: quantity, ...product },
+            });
+          }}
+        >
+          ADD TO CART
+        </button>
+      </div>
     </div>
   );
 };
