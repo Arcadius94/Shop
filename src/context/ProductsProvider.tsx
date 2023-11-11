@@ -46,25 +46,6 @@ export const ProductsContextProvider = ({
     return product.discount;
   });
 
-  // const [shouldUpdateLS, setshouldUpdateLS] = useState(false);
-
-  // if (shouldUpdateLS) {
-  //   localStorage.setItem("calendarData", JSON.stringify(birthdays));
-  // }
-  // //useEffect
-
-  // // localStorage.clear();
-  // useEffect(() => {
-  //   const localStorageData = localStorage.getItem("calendarData");
-  //   if (localStorageData) {
-  //     setBirthdays(JSON.parse(localStorageData));
-  //   }
-  // }, []);
-
-  // // useEffect(() => {
-  // //   window.addEventListener('updateLs', (birthdays => lsupdate))
-  // // }, [])
-
   return (
     <ProductsContext.Provider
       value={{ products, promotedProducts, discountedProducts }}

@@ -16,7 +16,7 @@ export const Slider = () => {
   const navigate = useNavigate();
 
   if (promotedProducts!.length === 0) {
-    return <h1>Hello on our shop</h1>;
+    return <h1>Hellop</h1>;
   }
   return (
     <div className={style.slider}>

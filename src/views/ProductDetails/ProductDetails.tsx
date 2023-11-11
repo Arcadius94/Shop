@@ -4,13 +4,14 @@ import { useState } from "react";
 import style from "./ProductDetails.module.scss";
 import { useCartContext } from "../../context/CartProvider";
 import { ProductType } from "../../context/ProductsProviderTypes";
-import { REDUCER_ACTION_TYPE } from "../../context/CartProviderTypes";
+import { Link } from "react-router-dom";
 
 export const ProductDetails = () => {
   const { productId } = useParams();
   const { product }: { product: ProductType | undefined } =
     useProductsContext(productId);
   const [quantity, setQuantity] = useState(1);
+  const [addToCartFlag, setAddToCartFlag] = useState(false);
   const { dispatchCart } = useCartContext();
 
   if (!product) {
@@ -51,7 +52,39 @@ export const ProductDetails = () => {
             +
           </button>
         </div>
-        <button
+        {addToCartFlag ? (
+          <>
+            <button
+              style={{ backgroundColor: "lightgreen" }}
+              onClick={() => {
+                dispatchCart({
+                  type: "ADD",
+                  payload: { qty: 1, ...product },
+                });
+              }}
+              className={style.add}
+            >
+              ADD MORE
+            </button>
+            <Link to={`/cart`}>
+              <button className={style.add}>Go to cart</button>
+            </Link>
+          </>
+        ) : (
+          <button
+            onClick={() => {
+              setAddToCartFlag(true);
+              dispatchCart({
+                type: "ADD",
+                payload: { qty: 1, ...product },
+              });
+            }}
+            className={style.add}
+          >
+            ADD TO CART
+          </button>
+        )}
+        {/* <button
           className={style.add}
           onClick={() => {
             dispatchCart({
@@ -61,7 +94,7 @@ export const ProductDetails = () => {
           }}
         >
           ADD TO CART
-        </button>
+        </button> */}
       </div>
     </div>
   );

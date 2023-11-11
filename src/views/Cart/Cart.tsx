@@ -34,9 +34,12 @@ export const Cart = () => {
       {cartState.cart.map((item: CartItemType) => (
         <div className={style.item} key={item.id}>
           <img src={item.image} alt="" />
+
           <div className={style.details}>
             <h1 className={style.h1}>{item.title}</h1>
+
             <p>{item.description?.substring(0, 100)}...</p>
+
             <div className={style.price}>
               {item.qty} x ${item.discount ? item.discount : item.price}
               <div className={style.promo}>
