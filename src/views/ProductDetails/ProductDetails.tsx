@@ -5,6 +5,7 @@ import style from "./ProductDetails.module.scss";
 import { useCartContext } from "../../context/CartProvider";
 import { ProductType } from "../../context/ProductsProviderTypes";
 import { Link } from "react-router-dom";
+import { REDUCER_ACTION_TYPE } from "../../context/CartProviderTypes";
 
 export const ProductDetails = () => {
   const { productId } = useParams();
@@ -75,8 +76,8 @@ export const ProductDetails = () => {
             onClick={() => {
               setAddToCartFlag(true);
               dispatchCart({
-                type: "ADD",
-                payload: { qty: 1, ...product },
+                type: REDUCER_ACTION_TYPE.ADD,
+                payload: { qty: quantity, ...product },
               });
             }}
             className={style.add}
@@ -84,17 +85,6 @@ export const ProductDetails = () => {
             ADD TO CART
           </button>
         )}
-        {/* <button
-          className={style.add}
-          onClick={() => {
-            dispatchCart({
-              type: REDUCER_ACTION_TYPE.ADD,
-              payload: { qty: quantity, ...product },
-            });
-          }}
-        >
-          ADD TO CART
-        </button> */}
       </div>
     </div>
   );
