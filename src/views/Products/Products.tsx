@@ -7,29 +7,8 @@ import { ProductType } from "../../context/ProductsProviderTypes";
 export const Products = () => {
   const [sort, setSort] = useState<"asc" | "desc" | "">("");
   const [selectedSubCats, setSelectedSubCats] = useState<string[]>([]);
-  const { products } = useProductsContext();
-
-  let maxProductPrice = products![0].price + 1;
-
-  for (const product of products!) {
-    if (product.price > maxProductPrice) {
-      maxProductPrice = product.price + 1;
-    }
-  }
-
-  const [maxPrice, setMaxPrice] = useState<number>(maxProductPrice);
-
-  const getproductsCategories = (products: ProductType[]) => {
-    const productsCategories: string[] = [];
-
-    products.forEach((item) => {
-      if (productsCategories.indexOf(item.category) === -1) {
-        productsCategories.push(item.category);
-      }
-    });
-    return productsCategories;
-  };
-  const uniqueCategories = getproductsCategories(products!);
+  const { maxProductPrice, productsCategories } = useProductsContext();
+  const [maxPriceFilter, setMaxPriceFilter] = useState(maxProductPrice);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -46,7 +25,7 @@ export const Products = () => {
       <div className={style.left}>
         <div className={style.filterItem}>
           <h2>Product Categories</h2>
-          {uniqueCategories?.map((category: string) => (
+          {productsCategories?.map((category: string) => (
             <div className={style.inputCategory} key={category}>
               <label>
                 <input
@@ -67,11 +46,11 @@ export const Products = () => {
             <input
               type="range"
               min={0}
-              value={maxPrice}
+              value={maxPriceFilter}
               max={maxProductPrice}
-              onChange={(e) => setMaxPrice(+e.target.value)}
+              onChange={(e) => setMaxPriceFilter(+e.target.value)}
             />
-            <span>{maxPrice}</span>
+            <span>{maxPriceFilter}</span>
           </div>
         </div>
         <div className={style.filterItem}>
@@ -100,7 +79,7 @@ export const Products = () => {
       </div>
       <div className={style.right}>
         <ProductList
-          maxPrice={maxPrice}
+          maxPrice={maxPriceFilter}
           sort={sort}
           subCats={selectedSubCats}
         />

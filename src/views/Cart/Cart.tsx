@@ -7,9 +7,16 @@ import { CartItemType, CartContextType } from "../../context/CartProviderTypes";
 export const Cart = () => {
   const [promoCode, setPromoCode] = useState("");
   const [promovalue, setPromoValue] = useState(1);
-  const [order, setOrder] = useState(false);
-  const { cartState, dispatchCart, totalPrice }: CartContextType =
-    useCartContext();
+  const [isOrder, setIsOrder] = useState(false);
+  const {
+    cartState,
+    addToCart,
+    onChangeQty,
+    totalPrice,
+    decrement,
+    remove,
+    submit,
+  }: CartContextType = useCartContext();
 
   const checkPromoCode = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -18,19 +25,20 @@ export const Cart = () => {
     }
   };
 
-  const onChangeQty = (
-    e: ChangeEvent<HTMLInputElement>,
-    item: CartItemType
-  ) => {
-    dispatchCart({
-      type: REDUCER_ACTION_TYPE.QUANTITY,
-      payload: { ...item, qty: Number(e.target.value) },
-    });
-  };
+  // const onChangeQty = (
+  //   e: ChangeEvent<HTMLInputElement>,
+  //   item: CartItemType
+  // ) => {
+  //   dispatchCart({
+  //     type: REDUCER_ACTION_TYPE.QUANTITY,
+  //     payload: { ...item, qty: Number(e.target.value) },
+  //   });
+  // };
 
   return (
     <div className={style.cart}>
       <h1 className={style.h1}>Products in your cart</h1>
+      {cartState.cart.length === 0 && <h2>Your cart is empty</h2>}
       {cartState.cart.map((item: CartItemType) => (
         <div className={style.item} key={item.id}>
           <img src={item.image} alt="" />
@@ -47,12 +55,7 @@ export const Cart = () => {
               </div>
               <button
                 className={style.setQty}
-                onClick={() =>
-                  dispatchCart({
-                    type: REDUCER_ACTION_TYPE.DECREMENT,
-                    payload: item.id,
-                  })
-                }
+                onClick={() => decrement(item.id)}
               >
                 -
               </button>
@@ -60,28 +63,15 @@ export const Cart = () => {
                 className={style.setQty}
                 type="number"
                 value={item.qty}
-                onChange={(e) => onChangeQty(e, item)}
+                onChange={(e) => onChangeQty(Number(e.target.value), item)}
               />
               <button
                 className={style.setQty}
-                onClick={() =>
-                  dispatchCart({
-                    type: REDUCER_ACTION_TYPE.ADD,
-                    payload: { ...item, qty: 1 },
-                  })
-                }
+                onClick={() => addToCart(1, item)}
               >
                 +
               </button>
-              <button
-                className={style.remove}
-                onClick={() =>
-                  dispatchCart({
-                    type: REDUCER_ACTION_TYPE.REMOVE,
-                    payload: item.id,
-                  })
-                }
-              >
+              <button className={style.remove} onClick={() => remove(item.id)}>
                 Remove
               </button>
             </div>
@@ -100,7 +90,7 @@ export const Cart = () => {
               }}
             />
           </label>
-          <input type="submit" value="Apply" />
+          <input className={style.apply} type="submit" value="Apply" />
         </form>
         <span>SUBTOTAL</span>
         <span>
@@ -113,15 +103,12 @@ export const Cart = () => {
       <button
         className={style.button}
         onClick={() => {
-          setOrder(true);
+          setIsOrder(true);
         }}
       >
-        {order ? "THANK YOU" : "PROCEED TO CHECKOUT"}
+        {isOrder ? "THANK YOU" : "PROCEED TO CHECKOUT"}
       </button>
-      <span
-        className={style.reset}
-        onClick={() => dispatchCart({ type: REDUCER_ACTION_TYPE.SUBMIT })}
-      >
+      <span className={style.reset} onClick={() => submit()}>
         Reset Cart
       </span>
     </div>

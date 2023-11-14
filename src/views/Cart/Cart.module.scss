@@ -80,6 +80,7 @@
     background-color: #2879fe;
     color: white;
     margin-bottom: 20px;
+    border-radius: 10px;
   }
 
   .reset {
@@ -87,4 +88,8 @@
     font-size: 12px;
     cursor: pointer;
   }
+}
+.apply {
+  cursor: pointer;
+  margin-left: 5px;
 }

@@ -9,14 +9,14 @@ export const Home = () => {
   return (
     <>
       <Slider />
-      <h1 className={style.best}>Best price:</h1>
+      <h2 className={style.best}>Discounts:</h2>
       <div className={style.container}>
         {discountedProducts?.length !== 0 ? (
           discountedProducts!.map((item: ProductType) => {
             return <Card product={item} key={item.id + item.category} />;
           })
         ) : (
-          <h1>Always best price</h1>
+          <h1>Check letter for any discounts</h1>
         )}
       </div>
     </>

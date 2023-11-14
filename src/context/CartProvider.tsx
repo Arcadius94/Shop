@@ -4,6 +4,7 @@ import {
   ReactNode,
   useReducer,
   useEffect,
+  ChangeEvent,
 } from "react";
 import {
   CartItemType,
@@ -12,18 +13,22 @@ import {
   CartContextType,
   ReducerAction,
 } from "./CartProviderTypes";
+import { ProductType } from "./ProductsProviderTypes";
 
 const CartContext = createContext<CartContextType | null>(null);
 
 // localStorage.clear();
-const saved = localStorage.getItem("products");
-let initial: CartStateType = JSON.parse(saved!);
-if (initial === null) {
-  initial = { cart: [] };
-}
-const initState: CartStateType = initial;
+const getInitial = () => {
+  const saved = localStorage.getItem("products");
+  let initial: CartStateType = JSON.parse(saved!);
+  if (initial === null) {
+    initial = { cart: [] };
+  }
+  return initial;
+};
+const initState: CartStateType = getInitial();
 
-const CartReducer = (
+const cartReducer = (
   state: CartStateType,
   action: ReducerAction
 ): CartStateType => {
@@ -41,9 +46,8 @@ const CartReducer = (
         const updatedProducts = structuredClone(state.cart);
         updatedProducts![alreadyExistingProductIndex].qty += action.payload.qty;
         return { ...state, cart: updatedProducts };
-      } else {
-        return { ...state, cart: [...state.cart, action.payload] };
       }
+      return { ...state, cart: [...state.cart, action.payload] };
     }
 
     case REDUCER_ACTION_TYPE.REMOVE:
@@ -67,11 +71,12 @@ const CartReducer = (
         }
         return product;
       });
-      const withouQty0Arr = lessProductsArr.filter(
+      const without0ItemArr = lessProductsArr.filter(
         (product) => product.qty > 0
       );
-      return { ...state, cart: withouQty0Arr };
+      return { ...state, cart: without0ItemArr };
     }
+
     case REDUCER_ACTION_TYPE.QUANTITY: {
       if (!action.payload) {
         throw new Error("action.payload missing in reducer QUANTITY action");
@@ -102,7 +107,7 @@ const CartReducer = (
 };
 
 export const CartContextProvider = ({ children }: { children: ReactNode }) => {
-  const [cartState, dispatchCart] = useReducer(CartReducer, initState);
+  const [cartState, dispatchCart] = useReducer(cartReducer, initState);
 
   useEffect(() => {
     localStorage.setItem("products", JSON.stringify(cartState));
@@ -119,9 +124,48 @@ export const CartContextProvider = ({ children }: { children: ReactNode }) => {
     );
   }, 0);
 
+  const onChangeQty = (quantity: number, item: ProductType) => {
+    dispatchCart({
+      type: REDUCER_ACTION_TYPE.QUANTITY,
+      payload: { ...item, qty: quantity },
+    });
+  };
+  const addToCart = (quantity: number, item: ProductType) => {
+    dispatchCart({
+      type: REDUCER_ACTION_TYPE.ADD,
+      payload: { ...item, qty: quantity },
+    });
+  };
+  const decrement = (id: number) => {
+    dispatchCart({
+      type: REDUCER_ACTION_TYPE.DECREMENT,
+      payload: id,
+    });
+  };
+  const submit = () => {
+    dispatchCart({
+      type: REDUCER_ACTION_TYPE.SUBMIT,
+    });
+  };
+  const remove = (id: number) => {
+    dispatchCart({
+      type: REDUCER_ACTION_TYPE.REMOVE,
+      payload: id,
+    });
+  };
+
   return (
     <CartContext.Provider
-      value={{ cartState, dispatchCart, totalItems, totalPrice }}
+      value={{
+        cartState,
+        totalItems,
+        totalPrice,
+        onChangeQty,
+        addToCart,
+        decrement,
+        remove,
+        submit,
+      }}
     >
       {children}
     </CartContext.Provider>

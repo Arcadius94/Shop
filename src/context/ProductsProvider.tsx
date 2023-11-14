@@ -26,17 +26,12 @@ export const ProductsContextProvider = ({
   //   getData().then((products) => setProducts(products));
   // }, []);
 
-  addPromoTag(products, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
-  addDiscount(products, 1, 100);
-  addDiscount(products, 2, 100);
-  addDiscount(products, 3, 100);
-  addDiscount(products, 4, 100);
-  addDiscount(products, 5, 100);
-  addDiscount(products, 6, 100);
-  addDiscount(products, 7, 100);
-  addDiscount(products, 8, 100);
-  addDiscount(products, 9, 100);
-  addDiscount(products, 10, 100);
+  addPromoTag(products, [1, 2, 3, 4, 5, 7, 9, 10, 11, 12, 13]);
+  addDiscount({ products: products, id: 11, discount: 100 });
+  addDiscount({ products: products, id: 12, discount: 100 });
+  addDiscount({ products: products, id: 13, discount: 100 });
+  addDiscount({ products: products, id: 14, discount: 100 });
+  addDiscount({ products: products, id: 15, discount: 100 });
 
   const promotedProducts = products.filter((product) => {
     return product.promotion === true;
@@ -46,9 +41,38 @@ export const ProductsContextProvider = ({
     return product.discount;
   });
 
+  // products.sort(a,b ) z contextu
+  let maxProductPrice = products![0].price + 1;
+
+  for (const product of products!) {
+    if (product.price > maxProductPrice) {
+      maxProductPrice = product.price + 1;
+    }
+  }
+
+  const getProductsCategories = (products: ProductType[]) => {
+    const productsCategories: string[] = [];
+
+    products.forEach((item) => {
+      if (productsCategories.indexOf(item.category) === -1) {
+        productsCategories.push(item.category);
+      }
+    });
+    return productsCategories;
+  };
+  const productsCategories = getProductsCategories(products!);
+
+  // do kontekstu, categories w memo i maxPrice w memo
+
   return (
     <ProductsContext.Provider
-      value={{ products, promotedProducts, discountedProducts }}
+      value={{
+        products,
+        promotedProducts,
+        discountedProducts,
+        maxProductPrice,
+        productsCategories,
+      }}
     >
       {children}
     </ProductsContext.Provider>

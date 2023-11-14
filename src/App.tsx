@@ -1,4 +1,4 @@
-import "./App.css";
+import style from "./App.module.scss";
 import { Routes, Route } from "react-router-dom";
 import { Home } from "./views/Home/Home";
 import { Products } from "./views/Products/Products";
@@ -12,7 +12,7 @@ import { Footer } from "./components/Footer/Footer";
 
 function App() {
   return (
-    <div className="app">
+    <div className={style.app}>
       <ProductsContextProvider>
         <CartContextProvider>
           <NavBar />

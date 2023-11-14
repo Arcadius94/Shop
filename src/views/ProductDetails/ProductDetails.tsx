@@ -12,8 +12,8 @@ export const ProductDetails = () => {
   const { product }: { product: ProductType | undefined } =
     useProductsContext(productId);
   const [quantity, setQuantity] = useState(1);
-  const [addToCartFlag, setAddToCartFlag] = useState(false);
-  const { dispatchCart } = useCartContext();
+  const [isAddedToCartFlag, setIsAddedToCartFlag] = useState(false);
+  const { addToCart } = useCartContext();
 
   if (!product) {
     return <div>Product not found.</div>;
@@ -53,32 +53,26 @@ export const ProductDetails = () => {
             +
           </button>
         </div>
-        {addToCartFlag ? (
+        {isAddedToCartFlag ? (
           <>
             <button
               style={{ backgroundColor: "lightgreen" }}
               onClick={() => {
-                dispatchCart({
-                  type: "ADD",
-                  payload: { qty: 1, ...product },
-                });
+                addToCart(quantity, product);
               }}
               className={style.add}
             >
               ADD MORE
             </button>
-            <Link to={`/cart`}>
+            <Link className={style.link} to={`/cart`}>
               <button className={style.add}>Go to cart</button>
             </Link>
           </>
         ) : (
           <button
             onClick={() => {
-              setAddToCartFlag(true);
-              dispatchCart({
-                type: REDUCER_ACTION_TYPE.ADD,
-                payload: { qty: quantity, ...product },
-              });
+              setIsAddedToCartFlag(true);
+              addToCart(quantity, product);
             }}
             className={style.add}
           >

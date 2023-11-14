@@ -1,8 +1,9 @@
 .slider {
   margin: auto;
+  margin-top: 50px;
   border-radius: 20px;
   height: 50vh;
-  width: 90%;
+  width: 1600px;
   position: relative;
   overflow: hidden;
 
@@ -13,7 +14,7 @@
     transition: all 1s ease;
 
     img {
-      // width: 100vw;
+      height: 90%;
       cursor: pointer;
       object-fit: cover;
     }
@@ -37,6 +38,8 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
+      background-color: white;
+      border-radius: 10px;
       p {
         color: grey;
         font-size: 50px;

@@ -2,6 +2,7 @@ import style from "./ProductList.module.scss";
 import { Card } from "../Card/Card";
 import { useProductsContext } from "../../context/ProductsProvider";
 import { ProductType } from "../../context/ProductsProviderTypes";
+import { useMemo } from "react";
 
 export const ProductList = ({
   maxPrice,
@@ -13,8 +14,6 @@ export const ProductList = ({
   subCats: string[];
 }) => {
   const { products } = useProductsContext();
-
-  let filtredProducts: ProductType[] = products!;
 
   function filterProductsBySelectedCategories(
     products: ProductType[],
@@ -60,24 +59,36 @@ export const ProductList = ({
           (a.discount ? a.discount : a.price)
       );
   }
-  filtredProducts = filterProductsByPriceRange(filtredProducts, 0, maxPrice);
 
-  if (sort === "desc") {
-    filtredProducts = sortProductsByPriceDescending(filtredProducts);
-  }
-  if (sort === "asc") {
-    filtredProducts = sortProductsByPriceAscending(filtredProducts);
-  }
-  if (subCats.length !== 0) {
-    filtredProducts = filterProductsBySelectedCategories(
-      filtredProducts,
-      subCats
+  const productsAfterFilter = useMemo(() => {
+    let filteredProductsArr = filterProductsByPriceRange(
+      products!,
+      0,
+      maxPrice
     );
-  }
 
+    if (sort === "desc") {
+      filteredProductsArr = sortProductsByPriceDescending(filteredProductsArr);
+    }
+    if (sort === "asc") {
+      filteredProductsArr = sortProductsByPriceAscending(filteredProductsArr);
+    }
+    if (subCats.length !== 0) {
+      filteredProductsArr = filterProductsBySelectedCategories(
+        filteredProductsArr,
+        subCats
+      );
+    }
+    return filteredProductsArr;
+  }, [sort, maxPrice, subCats]);
   return (
     <div className={style.list}>
-      {filtredProducts?.map((item) => (
+      {productsAfterFilter.length === 0 && (
+        <strong className={style.strong}>
+          There's no products with that specification
+        </strong>
+      )}
+      {productsAfterFilter.map((item: ProductType) => (
         <Card product={item} key={item.category + item.id} />
       ))}
     </div>

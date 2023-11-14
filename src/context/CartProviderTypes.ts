@@ -1,3 +1,5 @@
+import { ProductType } from "./ProductsProviderTypes";
+
 export interface CartItemType {
   id: number;
   title: string;
@@ -16,9 +18,13 @@ export interface CartStateType {
 
 export interface CartContextType {
   cartState: CartStateType;
-  dispatchCart: React.Dispatch<ReducerAction>;
   totalItems: number;
   totalPrice: number;
+  onChangeQty: (quantity: number, item: ProductType) => void;
+  addToCart: (quantity: number, item: ProductType) => void;
+  decrement: (id: number) => void;
+  remove: (id: number) => void;
+  submit: () => void;
 }
 
 export const REDUCER_ACTION_TYPE: {

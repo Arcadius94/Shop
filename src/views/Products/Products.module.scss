@@ -1,5 +1,5 @@
 .products {
-  padding: 30px 50px;
+  padding: 0px 50px;
   display: flex;
 
   .left {
@@ -12,13 +12,14 @@
       margin-bottom: 30px;
 
       h2 {
-        font-weight: 400;
+        font-weight: 600;
         margin-bottom: 20px;
       }
 
       .inputCategory {
         margin-bottom: 10px;
         label {
+          font-weight: 500;
           margin-left: 10px;
         }
       }

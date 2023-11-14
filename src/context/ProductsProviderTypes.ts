@@ -14,4 +14,6 @@ export interface ProductsContextType {
   products: ProductType[] | null;
   promotedProducts: ProductType[] | null;
   discountedProducts: ProductType[] | null;
+  maxProductPrice: number;
+  productsCategories: string[];
 }
