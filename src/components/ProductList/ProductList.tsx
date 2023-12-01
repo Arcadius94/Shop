@@ -5,10 +5,12 @@ import { ProductType } from "../../context/ProductsProviderTypes";
 import { useMemo } from "react";
 
 export const ProductList = ({
+  minPrice,
   maxPrice,
   sort,
   subCats,
 }: {
+  minPrice: number;
   maxPrice: number;
   sort: "asc" | "desc" | "";
   subCats: string[];
@@ -63,7 +65,7 @@ export const ProductList = ({
   const productsAfterFilter = useMemo(() => {
     let filteredProductsArr = filterProductsByPriceRange(
       products!,
-      0,
+      minPrice,
       maxPrice
     );
 
@@ -80,7 +82,7 @@ export const ProductList = ({
       );
     }
     return filteredProductsArr;
-  }, [sort, maxPrice, subCats]);
+  }, [sort, minPrice, maxPrice, subCats]);
   return (
     <div className={style.list}>
       {productsAfterFilter.length === 0 && (

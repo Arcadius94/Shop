@@ -2,12 +2,12 @@ import { useState } from "react";
 import { ProductList } from "../../components/ProductList/ProductList";
 import style from "./Products.module.scss";
 import { useProductsContext } from "../../context/ProductsProvider";
-import { ProductType } from "../../context/ProductsProviderTypes";
 
 export const Products = () => {
   const [sort, setSort] = useState<"asc" | "desc" | "">("");
   const [selectedSubCats, setSelectedSubCats] = useState<string[]>([]);
   const { maxProductPrice, productsCategories } = useProductsContext();
+  const [minPriceFilter, setMinPriceFilter] = useState(0);
   const [maxPriceFilter, setMaxPriceFilter] = useState(maxProductPrice);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,16 +41,20 @@ export const Products = () => {
         </div>
         <div className={style.filterItem}>
           <h2>Filter by price</h2>
-          <div className={style.inputItem}>
-            <span>0</span>
+          <div className={style.inputPrice}>
             <input
-              type="range"
-              min={0}
-              value={maxPriceFilter}
-              max={maxProductPrice}
+              className={style.inputNumber}
+              type="number"
+              placeholder="From"
+              onChange={(e) => setMinPriceFilter(+e.target.value)}
+            />
+            <span>-</span>
+            <input
+              className={style.inputNumber}
+              type="number"
+              placeholder="To"
               onChange={(e) => setMaxPriceFilter(+e.target.value)}
             />
-            <span>{maxPriceFilter}</span>
           </div>
         </div>
         <div className={style.filterItem}>
@@ -79,6 +83,7 @@ export const Products = () => {
       </div>
       <div className={style.right}>
         <ProductList
+          minPrice={minPriceFilter}
           maxPrice={maxPriceFilter}
           sort={sort}
           subCats={selectedSubCats}
