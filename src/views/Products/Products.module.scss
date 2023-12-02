@@ -31,14 +31,53 @@
     flex: 3;
   }
 }
-.inputPrice {
-  width: 100px;
-  display: flex;
+
+.sliderDiv {
+  width: 150px;
+  padding-left: 1em;
 }
-.inputNumber {
-  height: 25px;
-  margin-left: 10px;
-  margin-right: 10px;
-  min-width: 50%;
-  border-radius: 5px;
+.sliderDiv label:nth-child(1) {
+  position: absolute;
+  margin-top: 1.5em;
+  margin-left: 0.2em;
+}
+.sliderDiv input:nth-child(3) {
+  position: relative;
+  top: -2em;
+}
+.sliderDiv label:nth-child(4) {
+  position: absolute;
+  margin-top: -0.3em;
+  margin-left: -1em;
+}
+input[type="range"] {
+  margin: 1em;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 100%;
+  margin: 0;
+  padding: 0 2px;
+  overflow: hidden;
+  border: 0;
+  border-radius: 1px;
+  outline: none;
+  background: linear-gradient(grey, grey) no-repeat center;
+  background-size: 100% 2px;
+  pointer-events: none;
+}
+input[type="range"]::-webkit-slider-thumb {
+  height: 1em;
+  width: 1em;
+  border-radius: 1em;
+  background-color: #fff;
+  position: relative;
+  margin: 5px 0;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  pointer-events: all;
+  box-shadow: 0 1px 4px 0.5px rgba(0, 0, 0, 0.25);
+  z-index: 1;
 }

@@ -8,10 +8,10 @@ export const Slider = () => {
   const { promotedProducts } = useProductsContext();
 
   const prevSlide = () => {
-    setCurrentSlide(currentSlide === 0 ? 1 : (prev) => prev - 1);
+    setCurrentSlide(currentSlide === 0 ? 2 : (prev) => prev - 1);
   };
   const nextSlide = () => {
-    setCurrentSlide(currentSlide === 1 ? 0 : (prev) => prev + 1);
+    setCurrentSlide(currentSlide === 2 ? 0 : (prev) => prev + 1);
   };
   const navigate = useNavigate();
 
@@ -37,10 +37,10 @@ export const Slider = () => {
         })}
       </div>
       <div className={style.icons}>
-        <div className={style.icon} onClick={prevSlide}>
+        <div className={style.iconLeft} onClick={prevSlide}>
           <p>{"<"}</p>
         </div>
-        <div className={style.icon} onClick={nextSlide}>
+        <div className={style.iconRight} onClick={nextSlide}>
           <p>{">"}</p>
         </div>
       </div>

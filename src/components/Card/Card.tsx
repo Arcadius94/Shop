@@ -3,10 +3,6 @@ import style from "./Card.module.scss";
 import { Link } from "react-router-dom";
 import { ProductType } from "../../context/ProductsProviderTypes";
 import { useState } from "react";
-import {
-  CartItemType,
-  REDUCER_ACTION_TYPE,
-} from "../../context/CartProviderTypes";
 
 export const Card = ({ product }: { product: ProductType }) => {
   const { addToCart } = useCartContext();

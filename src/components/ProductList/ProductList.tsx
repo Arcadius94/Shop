@@ -33,7 +33,7 @@ export const ProductList = ({
   ): ProductType[] {
     return products.filter(
       (product) =>
-        product.price >= minPrice &&
+        (product.discount ? product.discount : product.price) >= minPrice &&
         (product.discount ? product.discount : product.price) <= maxPrice
     );
   }

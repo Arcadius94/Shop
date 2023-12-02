@@ -71,10 +71,10 @@ const cartReducer = (
         }
         return product;
       });
-      const without0ItemArr = lessProductsArr.filter(
+      const removedNullProducts = lessProductsArr.filter(
         (product) => product.qty > 0
       );
-      return { ...state, cart: without0ItemArr };
+      return { ...state, cart: removedNullProducts };
     }
 
     case REDUCER_ACTION_TYPE.QUANTITY: {

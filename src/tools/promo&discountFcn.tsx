@@ -10,16 +10,16 @@ export const addPromoTag = (products: ProductType[], ids: number[]) => {
 };
 export const addDiscount = ({
   products,
-  id,
-  discount,
+  ProductId,
+  discountValue,
 }: {
   products: ProductType[];
-  id: number;
-  discount: number;
+  ProductId: number;
+  discountValue: number;
 }) => {
   return products.map((product: ProductType) => {
-    if (product.id === id) {
-      return (product.discount = discount);
+    if (product.id === ProductId) {
+      return (product.discount = discountValue);
     }
   });
 };

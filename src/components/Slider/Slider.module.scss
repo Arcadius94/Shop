@@ -3,7 +3,7 @@
   margin-top: 50px;
   border-radius: 20px;
   height: 50vh;
-  width: 1600px;
+  width: 80vw;
   position: relative;
   overflow: hidden;
 
@@ -23,14 +23,13 @@
   .icons {
     width: fit-content;
     display: flex;
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 50px;
     gap: 10px;
     margin: auto;
 
-    .icon {
+    .iconLeft,
+    .iconRight {
+      position: absolute;
+      top: 45%;
       width: 50px;
       height: 50px;
       border: 1px solid grey;
@@ -47,4 +46,10 @@
       }
     }
   }
+}
+.iconLeft {
+  left: 5px;
+}
+.iconRight {
+  right: 5px;
 }

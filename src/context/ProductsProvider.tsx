@@ -12,39 +12,25 @@ export const ProductsContextProvider = ({
 }: {
   children: ReactNode;
 }) => {
-  const [products, setProducts] = useState(initState);
+  const [productsArray, setProducts] = useState(initState);
 
-  // useEffect(() => {
-  //   async function getData(): Promise<ProductType[]> {
-  //     const data = await fetch("https://fakestoreapi.com/products/")
-  //       .then((res) => res.json())
-  //       .catch((err) => {
-  //         if (err instanceof Error) console.log(err.message);
-  //       });
-  //     return data;
-  //   }
-  //   getData().then((products) => setProducts(products));
-  // }, []);
+  addPromoTag(productsArray, [1, 2, 3, 4, 5, 7, 9, 10, 11, 12, 13]);
 
-  addPromoTag(products, [1, 2, 3, 4, 5, 7, 9, 10, 11, 12, 13]);
-  addDiscount({ products: products, id: 11, discount: 100 });
-  addDiscount({ products: products, id: 12, discount: 100 });
-  addDiscount({ products: products, id: 13, discount: 100 });
-  addDiscount({ products: products, id: 14, discount: 100 });
-  addDiscount({ products: products, id: 15, discount: 100 });
+  for (let i = 11; i <= 16; i++) {
+    addDiscount({ products: productsArray, ProductId: i, discountValue: 200 });
+  }
 
-  const promotedProducts = products.filter((product) => {
+  const promotedProducts = productsArray.filter((product) => {
     return product.promotion === true;
   });
 
-  const discountedProducts = products.filter((product) => {
+  const discountedProducts = productsArray.filter((product) => {
     return product.discount;
   });
 
-  // products.sort(a,b ) z contextu
-  let maxProductPrice = products![0].price + 1;
+  let maxProductPrice = productsArray![0].price + 1;
 
-  for (const product of products!) {
+  for (const product of productsArray!) {
     if (product.price > maxProductPrice) {
       maxProductPrice = product.price + 1;
     }
@@ -60,14 +46,12 @@ export const ProductsContextProvider = ({
     });
     return productsCategories;
   };
-  const productsCategories = getProductsCategories(products!);
-
-  // do kontekstu, categories w memo i maxPrice w memo
+  const productsCategories = getProductsCategories(productsArray!);
 
   return (
     <ProductsContext.Provider
       value={{
-        products,
+        products: productsArray,
         promotedProducts,
         discountedProducts,
         maxProductPrice,

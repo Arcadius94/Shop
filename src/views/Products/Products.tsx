@@ -10,6 +10,19 @@ export const Products = () => {
   const [minPriceFilter, setMinPriceFilter] = useState(0);
   const [maxPriceFilter, setMaxPriceFilter] = useState(maxProductPrice);
 
+  const minPriceHadler = (minPriceFromInput: number) => {
+    setMinPriceFilter(minPriceFromInput);
+    if (minPriceFromInput >= maxPriceFilter) {
+      setMaxPriceFilter(minPriceFromInput);
+    }
+  };
+  const maxPriceHadler = (maxPriceFromInput: number) => {
+    setMaxPriceFilter(maxPriceFromInput);
+    if (maxPriceFromInput <= minPriceFilter) {
+      setMinPriceFilter(maxPriceFromInput);
+    }
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     const isChecked = e.target.checked;
@@ -41,20 +54,26 @@ export const Products = () => {
         </div>
         <div className={style.filterItem}>
           <h2>Filter by price</h2>
-          <div className={style.inputPrice}>
+          <div className={style.sliderDiv}>
+            <label htmlFor="a">{minPriceFilter}</label>
             <input
-              className={style.inputNumber}
-              type="number"
-              placeholder="From"
-              onChange={(e) => setMinPriceFilter(+e.target.value)}
+              name="a"
+              max={maxProductPrice}
+              onChange={(e) => minPriceHadler(+e.target.value)}
+              type="range"
+              value={minPriceFilter}
             />
-            <span>-</span>
             <input
-              className={style.inputNumber}
-              type="number"
-              placeholder="To"
-              onChange={(e) => setMaxPriceFilter(+e.target.value)}
+              name="b"
+              max={maxProductPrice}
+              className="b"
+              onChange={(e) => maxPriceHadler(+e.target.value)}
+              type="range"
+              value={maxPriceFilter}
             />
+            <label className={style.labelb} htmlFor="b">
+              {maxPriceFilter}
+            </label>
           </div>
         </div>
         <div className={style.filterItem}>
