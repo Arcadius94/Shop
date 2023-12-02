@@ -5,14 +5,13 @@ import style from "./ProductDetails.module.scss";
 import { useCartContext } from "../../context/CartProvider";
 import { ProductType } from "../../context/ProductsProviderTypes";
 import { Link } from "react-router-dom";
-import { REDUCER_ACTION_TYPE } from "../../context/CartProviderTypes";
 
 export const ProductDetails = () => {
   const { productId } = useParams();
   const { product }: { product: ProductType | undefined } =
     useProductsContext(productId);
   const [quantity, setQuantity] = useState(1);
-  const [isAddedToCartFlag, setIsAddedToCartFlag] = useState(false);
+  const [isAddedToCart, setIsAddedToCart] = useState(false);
   const { addToCart } = useCartContext();
 
   if (!product) {
@@ -53,7 +52,7 @@ export const ProductDetails = () => {
             +
           </button>
         </div>
-        {isAddedToCartFlag ? (
+        {isAddedToCart ? (
           <>
             <button
               style={{ backgroundColor: "lightgreen" }}
@@ -71,7 +70,7 @@ export const ProductDetails = () => {
         ) : (
           <button
             onClick={() => {
-              setIsAddedToCartFlag(true);
+              setIsAddedToCart(true);
               addToCart(quantity, product);
             }}
             className={style.add}

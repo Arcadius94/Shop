@@ -6,7 +6,7 @@ import { useState } from "react";
 
 export const Card = ({ product }: { product: ProductType }) => {
   const { addToCart } = useCartContext();
-  const [addToCartFlag, setAddToCartFlag] = useState(false);
+  const [isAddToCartFlag, setIsAddToCart] = useState(false);
   return (
     <div className={style.link}>
       <div className={style.card}>
@@ -21,7 +21,7 @@ export const Card = ({ product }: { product: ProductType }) => {
           <h2 className={style.h2}>{product.title}</h2>
         </Link>
         <div className={style.prices}>
-          {addToCartFlag ? (
+          {isAddToCartFlag ? (
             <>
               <button
                 style={{ backgroundColor: "lightgreen" }}
@@ -48,7 +48,7 @@ export const Card = ({ product }: { product: ProductType }) => {
           ) : (
             <button
               onClick={() => {
-                setAddToCartFlag(true);
+                setIsAddToCart(true);
                 addToCart(1, product);
               }}
               className={style.addToCart}

@@ -16,7 +16,7 @@ export const Home = () => {
             return <Card product={item} key={item.id + item.category} />;
           })
         ) : (
-          <h1>Check letter for any discounts</h1>
+          <h1>Check later for any discounts</h1>
         )}
       </div>
     </>

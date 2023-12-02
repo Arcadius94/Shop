@@ -4,19 +4,19 @@ import style from "./Products.module.scss";
 import { useProductsContext } from "../../context/ProductsProvider";
 
 export const Products = () => {
+  const { maxProductPrice, productsCategories } = useProductsContext();
   const [sort, setSort] = useState<"asc" | "desc" | "">("");
   const [selectedSubCats, setSelectedSubCats] = useState<string[]>([]);
-  const { maxProductPrice, productsCategories } = useProductsContext();
   const [minPriceFilter, setMinPriceFilter] = useState(0);
   const [maxPriceFilter, setMaxPriceFilter] = useState(maxProductPrice);
 
-  const minPriceHadler = (minPriceFromInput: number) => {
+  const minPriceHandler = (minPriceFromInput: number) => {
     setMinPriceFilter(minPriceFromInput);
     if (minPriceFromInput >= maxPriceFilter) {
       setMaxPriceFilter(minPriceFromInput);
     }
   };
-  const maxPriceHadler = (maxPriceFromInput: number) => {
+  const maxPriceHandler = (maxPriceFromInput: number) => {
     setMaxPriceFilter(maxPriceFromInput);
     if (maxPriceFromInput <= minPriceFilter) {
       setMinPriceFilter(maxPriceFromInput);
@@ -59,7 +59,7 @@ export const Products = () => {
             <input
               name="a"
               max={maxProductPrice}
-              onChange={(e) => minPriceHadler(+e.target.value)}
+              onChange={(e) => minPriceHandler(+e.target.value)}
               type="range"
               value={minPriceFilter}
             />
@@ -67,7 +67,7 @@ export const Products = () => {
               name="b"
               max={maxProductPrice}
               className="b"
-              onChange={(e) => maxPriceHadler(+e.target.value)}
+              onChange={(e) => maxPriceHandler(+e.target.value)}
               type="range"
               value={maxPriceFilter}
             />
