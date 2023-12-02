@@ -1,8 +1,8 @@
 import style from "./Cart.module.scss";
-import { useState, ChangeEvent, FormEvent } from "react";
-import { REDUCER_ACTION_TYPE } from "../../context/CartProviderTypes";
+import { useState, FormEvent } from "react";
 import { useCartContext } from "../../context/CartProvider";
 import { CartItemType, CartContextType } from "../../context/CartProviderTypes";
+import { Link } from "react-router-dom";
 
 export const Cart = () => {
   const [promoCode, setPromoCode] = useState("");
@@ -25,20 +25,14 @@ export const Cart = () => {
     }
   };
 
-  // const onChangeQty = (
-  //   e: ChangeEvent<HTMLInputElement>,
-  //   item: CartItemType
-  // ) => {
-  //   dispatchCart({
-  //     type: REDUCER_ACTION_TYPE.QUANTITY,
-  //     payload: { ...item, qty: Number(e.target.value) },
-  //   });
-  // };
-
   return (
     <div className={style.cart}>
       <h1 className={style.h1}>Products in your cart</h1>
-      {cartState.cart.length === 0 && <h2>Your cart is empty</h2>}
+      {cartState.cart.length === 0 && (
+        <h2>
+          Your cart is empty. Check our <Link to={`/products`}>Products</Link>
+        </h2>
+      )}
       {cartState.cart.map((item: CartItemType) => (
         <div className={style.item} key={item.id}>
           <img src={item.image} alt="" />

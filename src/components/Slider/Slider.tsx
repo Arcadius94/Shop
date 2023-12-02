@@ -22,7 +22,7 @@ export const Slider = () => {
     <div className={style.slider}>
       <div
         className={style.container}
-        style={{ transform: `translateX(-${currentSlide * 100}vw)` }}
+        style={{ transform: `translateX(-${currentSlide * 50}vw)` }}
       >
         {promotedProducts!.map((product) => {
           return (
