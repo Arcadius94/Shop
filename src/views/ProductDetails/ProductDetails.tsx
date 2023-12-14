@@ -3,13 +3,11 @@ import { useProductsContext } from "../../context/ProductsProvider";
 import { useState } from "react";
 import style from "./ProductDetails.module.scss";
 import { useCartContext } from "../../context/CartProvider";
-import { ProductType } from "../../context/ProductsProviderTypes";
 import { Link } from "react-router-dom";
 
 export const ProductDetails = () => {
   const { productId } = useParams();
-  const { product }: { product: ProductType | undefined } =
-    useProductsContext(productId);
+  const { product } = useProductsContext(productId);
   const [quantity, setQuantity] = useState(1);
   const [isAddedToCart, setIsAddedToCart] = useState(false);
   const { addToCart } = useCartContext();
@@ -19,7 +17,7 @@ export const ProductDetails = () => {
   }
 
   return (
-    <div className={style.product}>
+    <section className={style.product}>
       <div className={style.left}>
         <div className={style.img}>
           <img src={product.image} alt={product.title} />
@@ -79,6 +77,6 @@ export const ProductDetails = () => {
           </button>
         )}
       </div>
-    </div>
+    </section>
   );
 };

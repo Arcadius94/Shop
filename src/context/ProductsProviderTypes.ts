@@ -11,9 +11,12 @@ export interface ProductType {
 }
 
 export interface ProductsContextType {
-  products: ProductType[] | null;
-  promotedProducts: ProductType[] | null;
-  discountedProducts: ProductType[] | null;
+  products: ProductType[] | [];
+  promotedProducts: ProductType[] | [];
+  discountedProducts: ProductType[] | [];
   maxProductPrice: number;
   productsCategories: string[];
 }
+
+//isPromotion
+//discountValue - moze byc procent itp

@@ -6,7 +6,9 @@ import { useProductsContext } from "../../context/ProductsProvider";
 export const Products = () => {
   const { maxProductPrice, productsCategories } = useProductsContext();
   const [sort, setSort] = useState<"asc" | "desc" | "">("");
-  const [selectedSubCats, setSelectedSubCats] = useState<string[]>([]);
+  const [selectedSubCategories, setSelectedSubCategories] = useState<string[]>(
+    []
+  );
   const [minPriceFilter, setMinPriceFilter] = useState(0);
   const [maxPriceFilter, setMaxPriceFilter] = useState(maxProductPrice);
 
@@ -26,10 +28,10 @@ export const Products = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     const isChecked = e.target.checked;
-    setSelectedSubCats(
+    setSelectedSubCategories(
       isChecked
-        ? [...selectedSubCats, value]
-        : selectedSubCats.filter((item) => item !== value)
+        ? [...selectedSubCategories, value]
+        : selectedSubCategories.filter((item) => item !== value)
     );
   };
 
@@ -55,9 +57,10 @@ export const Products = () => {
         <div className={style.filterItem}>
           <h2>Filter by price</h2>
           <div className={style.sliderDiv}>
-            <label htmlFor="a">{minPriceFilter}</label>
+            <label htmlFor="minPrice">{minPriceFilter}</label>
             <input
-              name="a"
+              id="minPrice"
+              name="minPrice"
               max={maxProductPrice}
               onChange={(e) => minPriceHandler(+e.target.value)}
               type="range"
@@ -66,14 +69,11 @@ export const Products = () => {
             <input
               name="b"
               max={maxProductPrice}
-              className="b"
               onChange={(e) => maxPriceHandler(+e.target.value)}
               type="range"
               value={maxPriceFilter}
             />
-            <label className={style.labelb} htmlFor="b">
-              {maxPriceFilter}
-            </label>
+            <label htmlFor="b">{maxPriceFilter}</label>
           </div>
         </div>
         <div className={style.filterItem}>
@@ -105,7 +105,7 @@ export const Products = () => {
           minPrice={minPriceFilter}
           maxPrice={maxPriceFilter}
           sort={sort}
-          subCats={selectedSubCats}
+          subCats={selectedSubCategories}
         />
       </div>
     </div>

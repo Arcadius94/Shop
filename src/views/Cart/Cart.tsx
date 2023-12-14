@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 export const Cart = () => {
   const [promoCode, setPromoCode] = useState("");
-  const [promovalue, setPromoValue] = useState(1);
+  const [promoValue, setPromoValue] = useState(1);
   const [isOrder, setIsOrder] = useState(false);
   const {
     cartState,
@@ -78,7 +78,7 @@ export const Cart = () => {
             Promo or Gift Code:{" "}
             <input
               type="text"
-              placeholder="exaple: 50"
+              placeholder="example: 50"
               onChange={(e) => {
                 setPromoCode(e.target.value);
               }}
@@ -91,7 +91,7 @@ export const Cart = () => {
           {new Intl.NumberFormat("en-US", {
             style: "currency",
             currency: "USD",
-          }).format(totalPrice * promovalue)}
+          }).format(totalPrice * promoValue)}
         </span>
       </div>
       <button

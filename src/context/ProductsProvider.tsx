@@ -1,9 +1,13 @@
-import { createContext, useState, useContext, ReactNode } from "react";
-import data from "../data/data.json";
+import {
+  createContext,
+  useState,
+  useContext,
+  ReactNode,
+  useEffect,
+} from "react";
+
 import { ProductType, ProductsContextType } from "./ProductsProviderTypes";
 import { addPromoTag, addDiscount } from "../tools/promo&discountFcn";
-
-const initState: ProductType[] = data;
 
 const ProductsContext = createContext<ProductsContextType | null>(null);
 
@@ -12,29 +16,41 @@ export const ProductsContextProvider = ({
 }: {
   children: ReactNode;
 }) => {
-  const [productsArray, setProducts] = useState(initState);
+  const [productsArray, setProducts] = useState<ProductType[]>([]);
 
-  addPromoTag(productsArray, [1, 2, 3, 4, 5, 7, 9, 10, 11, 12, 13]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch(`https://fakestoreapi.com/products/`);
+      const data = await response.json();
+      setProducts(data);
+    };
+    fetchData();
+  }, []);
 
-  for (let i = 11; i <= 16; i++) {
+  const promotedProducts = addPromoTag(
+    productsArray,
+    [1, 2, 3, 4, 5, 7, 9, 10, 11, 12, 13]
+  ); //useMemo
+
+  // const discountedProductsIds [1,2,3,4,5,6]
+  // discountedProducts.map(productId)
+
+  for (let i = 11; i <= 13; i++) {
     addDiscount({ products: productsArray, ProductId: i, discountValue: 200 });
   }
 
-  const promotedProducts = productsArray.filter((product) => {
-    return product.promotion === true;
-  });
+  // const promotedProducts = productsArray.filter((product) => {
+  //   return product.promotion === true;
+  // });
 
   const discountedProducts = productsArray.filter((product) => {
     return product.discount;
   });
 
-  let maxProductPrice = productsArray![0].price + 1;
-
-  for (const product of productsArray!) {
-    if (product.price > maxProductPrice) {
-      maxProductPrice = product.price + 1;
-    }
-  }
+  const maxProductPrice =
+    productsArray.reduce((maxPrice: number, product: ProductType) => {
+      return product.price > maxPrice ? product.price : maxPrice;
+    }, 0) + 0.01;
 
   const getProductsCategories = (products: ProductType[]) => {
     const productsCategories: string[] = [];
@@ -45,6 +61,8 @@ export const ProductsContextProvider = ({
       }
     });
     return productsCategories;
+
+    // () => {}, [] reduce
   };
   const productsCategories = getProductsCategories(productsArray!);
 
@@ -63,7 +81,7 @@ export const ProductsContextProvider = ({
   );
 };
 
-export const useProductsContext = (id?: string | undefined) => {
+export const useProductsContext = (id?: string) => {
   const context = useContext(ProductsContext);
   if (!context)
     throw new Error(

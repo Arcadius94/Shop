@@ -19,9 +19,10 @@ const CartContext = createContext<CartContextType | null>(null);
 // localStorage.clear();
 const getInitial = () => {
   const saved = localStorage.getItem("products");
-  let initial: CartStateType = JSON.parse(saved!);
-  if (initial === null) {
-    initial = { cart: [] };
+
+  let initial: CartStateType = { cart: [] };
+  if (saved !== null) {
+    initial = JSON.parse(saved);
   }
   return initial;
 };
@@ -37,7 +38,7 @@ const cartReducer = (
         throw new Error("action.payload missing in reducer ADD action");
       }
 
-      const alreadyExistingProductIndex = state.cart!.findIndex(
+      const alreadyExistingProductIndex = state.cart.findIndex(
         (product) => product.id === action.payload!.id
       );
 
@@ -48,7 +49,7 @@ const cartReducer = (
       }
       return { ...state, cart: [...state.cart, action.payload] };
     }
-
+    //mala funkcja z sprawdzaniem action
     case REDUCER_ACTION_TYPE.REMOVE:
       if (!action.payload) {
         throw new Error("action.payload missing in reducer REMOVE action");
@@ -111,6 +112,10 @@ export const CartContextProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     localStorage.setItem("products", JSON.stringify(cartState));
   }, [cartState]);
+
+  // const {totalItems,totalPrice } = cartState.cart.reduce((previousValue, cartItem) => {
+  //   return previousValue + cartItem.qty;
+  // }, 0);
 
   const totalItems = cartState.cart.reduce((previousValue, cartItem) => {
     return previousValue + cartItem.qty;

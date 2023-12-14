@@ -1,17 +1,9 @@
 import { ProductType } from "./ProductsProviderTypes";
 
-export interface CartItemType {
-  id: number;
-  title: string;
-  price: number;
-  description: string;
-  category: string;
-  image: string;
-  rating: { rate: number; count: number };
-  promotion?: boolean;
-  discount?: number;
+export interface CartItemType extends ProductType {
   qty: number;
 }
+
 export interface CartStateType {
   cart: CartItemType[];
 }
